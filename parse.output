@@ -1,0 +1,2125 @@
+Terminals unused in grammar
+
+   ASSIGN_OP
+
+
+State 121 conflicts: 1 shift/reduce
+State 133 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: procedure_definition
+    2        | variable_declaration program
+    3        | procedure_declaration program
+
+    4 procedure_declaration: type NAME '(' optional_arg_list ')' ';'
+
+    5 type: INT
+    6     | BOOL
+    7     | FLOAT
+    8     | VOID
+    9     | STRING
+
+   10 arg: type NAME
+
+   11 arg_list: arg
+   12         | arg_list ',' arg
+
+   13 optional_arg_list: %empty
+   14                  | arg_list
+
+   15 procedure_definition: type NAME '(' optional_arg_list ')' '{' optional_variable_declaration_list statement_list '}'
+
+   16 optional_variable_declaration_list: %empty
+   17                                   | optional_variable_declaration_list variable_declaration
+
+   18 variable_declaration: type varlist ';'
+
+   19 varlist: NAME
+   20        | varlist ',' NAME
+
+   21 statement_list: %empty
+   22               | statement_list assignment
+   23               | statement_list print
+   24               | statement_list read
+   25               | statement_list while_stmt
+   26               | statement_list do_while_stmt
+   27               | statement_list if_else_stmt
+
+   28 statement: assignment
+   29          | print
+   30          | read
+   31          | while_stmt
+   32          | do_while_stmt
+   33          | if_else_stmt
+
+   34 while_stmt: WHILE '(' exp ')' statement
+   35           | WHILE '(' exp ')' '{' statement_list '}'
+
+   36 do_while_stmt: DO statement WHILE '(' exp ')' ';'
+   37              | DO '{' statement_list '}' WHILE '(' exp ')' ';'
+
+   38 if_else_stmt: IF '(' exp ')' statement optional_else_stmt
+   39             | IF '(' exp ')' '{' statement_list '}' optional_else_stmt
+
+   40 optional_else_stmt: %empty
+   41                   | ELSE statement
+   42                   | ELSE '{' statement_list '}'
+
+   43 print: WRITE NAME ';'
+   44      | WRITE STR_CONSTANT ';'
+   45      | WRITE NUM ';'
+   46      | WRITE FNUM ';'
+
+   47 read: READ NAME ';'
+
+   48 assignment: NAME '=' exp ';'
+
+   49 exp: NUM
+   50    | FNUM
+   51    | STR_CONSTANT
+   52    | NAME
+   53    | exp '+' exp
+   54    | exp '-' exp
+   55    | exp '*' exp
+   56    | exp '/' exp
+   57    | '-' exp
+   58    | '(' exp ')'
+   59    | exp EQUAL exp
+   60    | exp NE exp
+   61    | exp '<' exp
+   62    | exp '>' exp
+   63    | exp LTE exp
+   64    | exp GTE exp
+   65    | exp OR exp
+   66    | exp AND exp
+   67    | '!' exp
+   68    | exp '?' exp ':' exp
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'!' (33) 67
+'(' (40) 4 15 34 35 36 37 38 39 58
+')' (41) 4 15 34 35 36 37 38 39 58
+'*' (42) 55
+'+' (43) 53
+',' (44) 12 20
+'-' (45) 54 57
+'/' (47) 56
+':' (58) 68
+';' (59) 4 18 36 37 43 44 45 46 47 48
+'<' (60) 61
+'=' (61) 48
+'>' (62) 62
+'?' (63) 68
+'{' (123) 15 35 37 39 42
+'}' (125) 15 35 37 39 42
+error (256)
+NUM (258) 45 49
+FNUM (259) 46 50
+NAME (260) 4 10 15 19 20 43 47 48 52
+STR_CONSTANT (261) 44 51
+INT (262) 5
+BOOL (263) 6
+FLOAT (264) 7
+STRING (265) 9
+WRITE (266) 43 44 45 46
+READ (267) 47
+VOID (268) 8
+ASSIGN_OP (269)
+UMINUS (270)
+AND (271) 66
+OR (272) 65
+GTE (273) 64
+LTE (274) 63
+NE (275) 60
+EQUAL (276) 59
+DO (277) 36 37
+WHILE (278) 34 35 36 37
+IF (279) 38 39
+ELSE (280) 41 42
+
+
+Nonterminals, with rules where they appear
+
+$accept (42)
+    on left: 0
+program (43)
+    on left: 1 2 3, on right: 0 2 3
+procedure_declaration (44)
+    on left: 4, on right: 3
+type (45)
+    on left: 5 6 7 8 9, on right: 4 10 15 18
+arg (46)
+    on left: 10, on right: 11 12
+arg_list (47)
+    on left: 11 12, on right: 12 14
+optional_arg_list (48)
+    on left: 13 14, on right: 4 15
+procedure_definition (49)
+    on left: 15, on right: 1
+optional_variable_declaration_list (50)
+    on left: 16 17, on right: 15 17
+variable_declaration (51)
+    on left: 18, on right: 2 17
+varlist (52)
+    on left: 19 20, on right: 18 20
+statement_list (53)
+    on left: 21 22 23 24 25 26 27, on right: 15 22 23 24 25 26 27 35
+    37 39 42
+statement (54)
+    on left: 28 29 30 31 32 33, on right: 34 36 38 41
+while_stmt (55)
+    on left: 34 35, on right: 25 31
+do_while_stmt (56)
+    on left: 36 37, on right: 26 32
+if_else_stmt (57)
+    on left: 38 39, on right: 27 33
+optional_else_stmt (58)
+    on left: 40 41 42, on right: 38 39
+print (59)
+    on left: 43 44 45 46, on right: 23 29
+read (60)
+    on left: 47, on right: 24 30
+assignment (61)
+    on left: 48, on right: 22 28
+exp (62)
+    on left: 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66
+    67 68, on right: 34 35 36 37 38 39 48 53 54 55 56 57 58 59 60 61
+    62 63 64 65 66 67 68
+
+
+State 0
+
+    0 $accept: . program $end
+
+    INT     shift, and go to state 1
+    BOOL    shift, and go to state 2
+    FLOAT   shift, and go to state 3
+    STRING  shift, and go to state 4
+    VOID    shift, and go to state 5
+
+    program                go to state 6
+    procedure_declaration  go to state 7
+    type                   go to state 8
+    procedure_definition   go to state 9
+    variable_declaration   go to state 10
+
+
+State 1
+
+    5 type: INT .
+
+    $default  reduce using rule 5 (type)
+
+
+State 2
+
+    6 type: BOOL .
+
+    $default  reduce using rule 6 (type)
+
+
+State 3
+
+    7 type: FLOAT .
+
+    $default  reduce using rule 7 (type)
+
+
+State 4
+
+    9 type: STRING .
+
+    $default  reduce using rule 9 (type)
+
+
+State 5
+
+    8 type: VOID .
+
+    $default  reduce using rule 8 (type)
+
+
+State 6
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 11
+
+
+State 7
+
+    3 program: procedure_declaration . program
+
+    INT     shift, and go to state 1
+    BOOL    shift, and go to state 2
+    FLOAT   shift, and go to state 3
+    STRING  shift, and go to state 4
+    VOID    shift, and go to state 5
+
+    program                go to state 12
+    procedure_declaration  go to state 7
+    type                   go to state 8
+    procedure_definition   go to state 9
+    variable_declaration   go to state 10
+
+
+State 8
+
+    4 procedure_declaration: type . NAME '(' optional_arg_list ')' ';'
+   15 procedure_definition: type . NAME '(' optional_arg_list ')' '{' optional_variable_declaration_list statement_list '}'
+   18 variable_declaration: type . varlist ';'
+
+    NAME  shift, and go to state 13
+
+    varlist  go to state 14
+
+
+State 9
+
+    1 program: procedure_definition .
+
+    $default  reduce using rule 1 (program)
+
+
+State 10
+
+    2 program: variable_declaration . program
+
+    INT     shift, and go to state 1
+    BOOL    shift, and go to state 2
+    FLOAT   shift, and go to state 3
+    STRING  shift, and go to state 4
+    VOID    shift, and go to state 5
+
+    program                go to state 15
+    procedure_declaration  go to state 7
+    type                   go to state 8
+    procedure_definition   go to state 9
+    variable_declaration   go to state 10
+
+
+State 11
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 12
+
+    3 program: procedure_declaration program .
+
+    $default  reduce using rule 3 (program)
+
+
+State 13
+
+    4 procedure_declaration: type NAME . '(' optional_arg_list ')' ';'
+   15 procedure_definition: type NAME . '(' optional_arg_list ')' '{' optional_variable_declaration_list statement_list '}'
+   19 varlist: NAME .
+
+    '('  shift, and go to state 16
+
+    $default  reduce using rule 19 (varlist)
+
+
+State 14
+
+   18 variable_declaration: type varlist . ';'
+   20 varlist: varlist . ',' NAME
+
+    ';'  shift, and go to state 17
+    ','  shift, and go to state 18
+
+
+State 15
+
+    2 program: variable_declaration program .
+
+    $default  reduce using rule 2 (program)
+
+
+State 16
+
+    4 procedure_declaration: type NAME '(' . optional_arg_list ')' ';'
+   15 procedure_definition: type NAME '(' . optional_arg_list ')' '{' optional_variable_declaration_list statement_list '}'
+
+    INT     shift, and go to state 1
+    BOOL    shift, and go to state 2
+    FLOAT   shift, and go to state 3
+    STRING  shift, and go to state 4
+    VOID    shift, and go to state 5
+
+    $default  reduce using rule 13 (optional_arg_list)
+
+    type               go to state 19
+    arg                go to state 20
+    arg_list           go to state 21
+    optional_arg_list  go to state 22
+
+
+State 17
+
+   18 variable_declaration: type varlist ';' .
+
+    $default  reduce using rule 18 (variable_declaration)
+
+
+State 18
+
+   20 varlist: varlist ',' . NAME
+
+    NAME  shift, and go to state 23
+
+
+State 19
+
+   10 arg: type . NAME
+
+    NAME  shift, and go to state 24
+
+
+State 20
+
+   11 arg_list: arg .
+
+    $default  reduce using rule 11 (arg_list)
+
+
+State 21
+
+   12 arg_list: arg_list . ',' arg
+   14 optional_arg_list: arg_list .
+
+    ','  shift, and go to state 25
+
+    $default  reduce using rule 14 (optional_arg_list)
+
+
+State 22
+
+    4 procedure_declaration: type NAME '(' optional_arg_list . ')' ';'
+   15 procedure_definition: type NAME '(' optional_arg_list . ')' '{' optional_variable_declaration_list statement_list '}'
+
+    ')'  shift, and go to state 26
+
+
+State 23
+
+   20 varlist: varlist ',' NAME .
+
+    $default  reduce using rule 20 (varlist)
+
+
+State 24
+
+   10 arg: type NAME .
+
+    $default  reduce using rule 10 (arg)
+
+
+State 25
+
+   12 arg_list: arg_list ',' . arg
+
+    INT     shift, and go to state 1
+    BOOL    shift, and go to state 2
+    FLOAT   shift, and go to state 3
+    STRING  shift, and go to state 4
+    VOID    shift, and go to state 5
+
+    type  go to state 19
+    arg   go to state 27
+
+
+State 26
+
+    4 procedure_declaration: type NAME '(' optional_arg_list ')' . ';'
+   15 procedure_definition: type NAME '(' optional_arg_list ')' . '{' optional_variable_declaration_list statement_list '}'
+
+    ';'  shift, and go to state 28
+    '{'  shift, and go to state 29
+
+
+State 27
+
+   12 arg_list: arg_list ',' arg .
+
+    $default  reduce using rule 12 (arg_list)
+
+
+State 28
+
+    4 procedure_declaration: type NAME '(' optional_arg_list ')' ';' .
+
+    $default  reduce using rule 4 (procedure_declaration)
+
+
+State 29
+
+   15 procedure_definition: type NAME '(' optional_arg_list ')' '{' . optional_variable_declaration_list statement_list '}'
+
+    $default  reduce using rule 16 (optional_variable_declaration_list)
+
+    optional_variable_declaration_list  go to state 30
+
+
+State 30
+
+   15 procedure_definition: type NAME '(' optional_arg_list ')' '{' optional_variable_declaration_list . statement_list '}'
+   17 optional_variable_declaration_list: optional_variable_declaration_list . variable_declaration
+
+    INT     shift, and go to state 1
+    BOOL    shift, and go to state 2
+    FLOAT   shift, and go to state 3
+    STRING  shift, and go to state 4
+    VOID    shift, and go to state 5
+
+    $default  reduce using rule 21 (statement_list)
+
+    type                  go to state 31
+    variable_declaration  go to state 32
+    statement_list        go to state 33
+
+
+State 31
+
+   18 variable_declaration: type . varlist ';'
+
+    NAME  shift, and go to state 34
+
+    varlist  go to state 14
+
+
+State 32
+
+   17 optional_variable_declaration_list: optional_variable_declaration_list variable_declaration .
+
+    $default  reduce using rule 17 (optional_variable_declaration_list)
+
+
+State 33
+
+   15 procedure_definition: type NAME '(' optional_arg_list ')' '{' optional_variable_declaration_list statement_list . '}'
+   22 statement_list: statement_list . assignment
+   23               | statement_list . print
+   24               | statement_list . read
+   25               | statement_list . while_stmt
+   26               | statement_list . do_while_stmt
+   27               | statement_list . if_else_stmt
+
+    NAME   shift, and go to state 35
+    WRITE  shift, and go to state 36
+    READ   shift, and go to state 37
+    DO     shift, and go to state 38
+    WHILE  shift, and go to state 39
+    IF     shift, and go to state 40
+    '}'    shift, and go to state 41
+
+    while_stmt     go to state 42
+    do_while_stmt  go to state 43
+    if_else_stmt   go to state 44
+    print          go to state 45
+    read           go to state 46
+    assignment     go to state 47
+
+
+State 34
+
+   19 varlist: NAME .
+
+    $default  reduce using rule 19 (varlist)
+
+
+State 35
+
+   48 assignment: NAME . '=' exp ';'
+
+    '='  shift, and go to state 48
+
+
+State 36
+
+   43 print: WRITE . NAME ';'
+   44      | WRITE . STR_CONSTANT ';'
+   45      | WRITE . NUM ';'
+   46      | WRITE . FNUM ';'
+
+    NUM           shift, and go to state 49
+    FNUM          shift, and go to state 50
+    NAME          shift, and go to state 51
+    STR_CONSTANT  shift, and go to state 52
+
+
+State 37
+
+   47 read: READ . NAME ';'
+
+    NAME  shift, and go to state 53
+
+
+State 38
+
+   36 do_while_stmt: DO . statement WHILE '(' exp ')' ';'
+   37              | DO . '{' statement_list '}' WHILE '(' exp ')' ';'
+
+    NAME   shift, and go to state 35
+    WRITE  shift, and go to state 36
+    READ   shift, and go to state 37
+    DO     shift, and go to state 38
+    WHILE  shift, and go to state 39
+    IF     shift, and go to state 40
+    '{'    shift, and go to state 54
+
+    statement      go to state 55
+    while_stmt     go to state 56
+    do_while_stmt  go to state 57
+    if_else_stmt   go to state 58
+    print          go to state 59
+    read           go to state 60
+    assignment     go to state 61
+
+
+State 39
+
+   34 while_stmt: WHILE . '(' exp ')' statement
+   35           | WHILE . '(' exp ')' '{' statement_list '}'
+
+    '('  shift, and go to state 62
+
+
+State 40
+
+   38 if_else_stmt: IF . '(' exp ')' statement optional_else_stmt
+   39             | IF . '(' exp ')' '{' statement_list '}' optional_else_stmt
+
+    '('  shift, and go to state 63
+
+
+State 41
+
+   15 procedure_definition: type NAME '(' optional_arg_list ')' '{' optional_variable_declaration_list statement_list '}' .
+
+    $default  reduce using rule 15 (procedure_definition)
+
+
+State 42
+
+   25 statement_list: statement_list while_stmt .
+
+    $default  reduce using rule 25 (statement_list)
+
+
+State 43
+
+   26 statement_list: statement_list do_while_stmt .
+
+    $default  reduce using rule 26 (statement_list)
+
+
+State 44
+
+   27 statement_list: statement_list if_else_stmt .
+
+    $default  reduce using rule 27 (statement_list)
+
+
+State 45
+
+   23 statement_list: statement_list print .
+
+    $default  reduce using rule 23 (statement_list)
+
+
+State 46
+
+   24 statement_list: statement_list read .
+
+    $default  reduce using rule 24 (statement_list)
+
+
+State 47
+
+   22 statement_list: statement_list assignment .
+
+    $default  reduce using rule 22 (statement_list)
+
+
+State 48
+
+   48 assignment: NAME '=' . exp ';'
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 71
+
+
+State 49
+
+   45 print: WRITE NUM . ';'
+
+    ';'  shift, and go to state 72
+
+
+State 50
+
+   46 print: WRITE FNUM . ';'
+
+    ';'  shift, and go to state 73
+
+
+State 51
+
+   43 print: WRITE NAME . ';'
+
+    ';'  shift, and go to state 74
+
+
+State 52
+
+   44 print: WRITE STR_CONSTANT . ';'
+
+    ';'  shift, and go to state 75
+
+
+State 53
+
+   47 read: READ NAME . ';'
+
+    ';'  shift, and go to state 76
+
+
+State 54
+
+   37 do_while_stmt: DO '{' . statement_list '}' WHILE '(' exp ')' ';'
+
+    $default  reduce using rule 21 (statement_list)
+
+    statement_list  go to state 77
+
+
+State 55
+
+   36 do_while_stmt: DO statement . WHILE '(' exp ')' ';'
+
+    WHILE  shift, and go to state 78
+
+
+State 56
+
+   31 statement: while_stmt .
+
+    $default  reduce using rule 31 (statement)
+
+
+State 57
+
+   32 statement: do_while_stmt .
+
+    $default  reduce using rule 32 (statement)
+
+
+State 58
+
+   33 statement: if_else_stmt .
+
+    $default  reduce using rule 33 (statement)
+
+
+State 59
+
+   29 statement: print .
+
+    $default  reduce using rule 29 (statement)
+
+
+State 60
+
+   30 statement: read .
+
+    $default  reduce using rule 30 (statement)
+
+
+State 61
+
+   28 statement: assignment .
+
+    $default  reduce using rule 28 (statement)
+
+
+State 62
+
+   34 while_stmt: WHILE '(' . exp ')' statement
+   35           | WHILE '(' . exp ')' '{' statement_list '}'
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 79
+
+
+State 63
+
+   38 if_else_stmt: IF '(' . exp ')' statement optional_else_stmt
+   39             | IF '(' . exp ')' '{' statement_list '}' optional_else_stmt
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 80
+
+
+State 64
+
+   49 exp: NUM .
+
+    $default  reduce using rule 49 (exp)
+
+
+State 65
+
+   50 exp: FNUM .
+
+    $default  reduce using rule 50 (exp)
+
+
+State 66
+
+   52 exp: NAME .
+
+    $default  reduce using rule 52 (exp)
+
+
+State 67
+
+   51 exp: STR_CONSTANT .
+
+    $default  reduce using rule 51 (exp)
+
+
+State 68
+
+   67 exp: '!' . exp
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 81
+
+
+State 69
+
+   57 exp: '-' . exp
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 82
+
+
+State 70
+
+   58 exp: '(' . exp ')'
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 83
+
+
+State 71
+
+   48 assignment: NAME '=' exp . ';'
+   53 exp: exp . '+' exp
+   54    | exp . '-' exp
+   55    | exp . '*' exp
+   56    | exp . '/' exp
+   59    | exp . EQUAL exp
+   60    | exp . NE exp
+   61    | exp . '<' exp
+   62    | exp . '>' exp
+   63    | exp . LTE exp
+   64    | exp . GTE exp
+   65    | exp . OR exp
+   66    | exp . AND exp
+   68    | exp . '?' exp ':' exp
+
+    AND    shift, and go to state 84
+    OR     shift, and go to state 85
+    GTE    shift, and go to state 86
+    LTE    shift, and go to state 87
+    NE     shift, and go to state 88
+    EQUAL  shift, and go to state 89
+    '?'    shift, and go to state 90
+    '<'    shift, and go to state 91
+    '>'    shift, and go to state 92
+    '+'    shift, and go to state 93
+    '-'    shift, and go to state 94
+    '*'    shift, and go to state 95
+    '/'    shift, and go to state 96
+    ';'    shift, and go to state 97
+
+
+State 72
+
+   45 print: WRITE NUM ';' .
+
+    $default  reduce using rule 45 (print)
+
+
+State 73
+
+   46 print: WRITE FNUM ';' .
+
+    $default  reduce using rule 46 (print)
+
+
+State 74
+
+   43 print: WRITE NAME ';' .
+
+    $default  reduce using rule 43 (print)
+
+
+State 75
+
+   44 print: WRITE STR_CONSTANT ';' .
+
+    $default  reduce using rule 44 (print)
+
+
+State 76
+
+   47 read: READ NAME ';' .
+
+    $default  reduce using rule 47 (read)
+
+
+State 77
+
+   22 statement_list: statement_list . assignment
+   23               | statement_list . print
+   24               | statement_list . read
+   25               | statement_list . while_stmt
+   26               | statement_list . do_while_stmt
+   27               | statement_list . if_else_stmt
+   37 do_while_stmt: DO '{' statement_list . '}' WHILE '(' exp ')' ';'
+
+    NAME   shift, and go to state 35
+    WRITE  shift, and go to state 36
+    READ   shift, and go to state 37
+    DO     shift, and go to state 38
+    WHILE  shift, and go to state 39
+    IF     shift, and go to state 40
+    '}'    shift, and go to state 98
+
+    while_stmt     go to state 42
+    do_while_stmt  go to state 43
+    if_else_stmt   go to state 44
+    print          go to state 45
+    read           go to state 46
+    assignment     go to state 47
+
+
+State 78
+
+   36 do_while_stmt: DO statement WHILE . '(' exp ')' ';'
+
+    '('  shift, and go to state 99
+
+
+State 79
+
+   34 while_stmt: WHILE '(' exp . ')' statement
+   35           | WHILE '(' exp . ')' '{' statement_list '}'
+   53 exp: exp . '+' exp
+   54    | exp . '-' exp
+   55    | exp . '*' exp
+   56    | exp . '/' exp
+   59    | exp . EQUAL exp
+   60    | exp . NE exp
+   61    | exp . '<' exp
+   62    | exp . '>' exp
+   63    | exp . LTE exp
+   64    | exp . GTE exp
+   65    | exp . OR exp
+   66    | exp . AND exp
+   68    | exp . '?' exp ':' exp
+
+    AND    shift, and go to state 84
+    OR     shift, and go to state 85
+    GTE    shift, and go to state 86
+    LTE    shift, and go to state 87
+    NE     shift, and go to state 88
+    EQUAL  shift, and go to state 89
+    '?'    shift, and go to state 90
+    '<'    shift, and go to state 91
+    '>'    shift, and go to state 92
+    '+'    shift, and go to state 93
+    '-'    shift, and go to state 94
+    '*'    shift, and go to state 95
+    '/'    shift, and go to state 96
+    ')'    shift, and go to state 100
+
+
+State 80
+
+   38 if_else_stmt: IF '(' exp . ')' statement optional_else_stmt
+   39             | IF '(' exp . ')' '{' statement_list '}' optional_else_stmt
+   53 exp: exp . '+' exp
+   54    | exp . '-' exp
+   55    | exp . '*' exp
+   56    | exp . '/' exp
+   59    | exp . EQUAL exp
+   60    | exp . NE exp
+   61    | exp . '<' exp
+   62    | exp . '>' exp
+   63    | exp . LTE exp
+   64    | exp . GTE exp
+   65    | exp . OR exp
+   66    | exp . AND exp
+   68    | exp . '?' exp ':' exp
+
+    AND    shift, and go to state 84
+    OR     shift, and go to state 85
+    GTE    shift, and go to state 86
+    LTE    shift, and go to state 87
+    NE     shift, and go to state 88
+    EQUAL  shift, and go to state 89
+    '?'    shift, and go to state 90
+    '<'    shift, and go to state 91
+    '>'    shift, and go to state 92
+    '+'    shift, and go to state 93
+    '-'    shift, and go to state 94
+    '*'    shift, and go to state 95
+    '/'    shift, and go to state 96
+    ')'    shift, and go to state 101
+
+
+State 81
+
+   53 exp: exp . '+' exp
+   54    | exp . '-' exp
+   55    | exp . '*' exp
+   56    | exp . '/' exp
+   59    | exp . EQUAL exp
+   60    | exp . NE exp
+   61    | exp . '<' exp
+   62    | exp . '>' exp
+   63    | exp . LTE exp
+   64    | exp . GTE exp
+   65    | exp . OR exp
+   66    | exp . AND exp
+   67    | '!' exp .
+   68    | exp . '?' exp ':' exp
+
+    GTE    shift, and go to state 86
+    LTE    shift, and go to state 87
+    NE     shift, and go to state 88
+    EQUAL  shift, and go to state 89
+    '<'    shift, and go to state 91
+    '>'    shift, and go to state 92
+    '+'    shift, and go to state 93
+    '-'    shift, and go to state 94
+    '*'    shift, and go to state 95
+    '/'    shift, and go to state 96
+
+    $default  reduce using rule 67 (exp)
+
+
+State 82
+
+   53 exp: exp . '+' exp
+   54    | exp . '-' exp
+   55    | exp . '*' exp
+   56    | exp . '/' exp
+   57    | '-' exp .
+   59    | exp . EQUAL exp
+   60    | exp . NE exp
+   61    | exp . '<' exp
+   62    | exp . '>' exp
+   63    | exp . LTE exp
+   64    | exp . GTE exp
+   65    | exp . OR exp
+   66    | exp . AND exp
+   68    | exp . '?' exp ':' exp
+
+    $default  reduce using rule 57 (exp)
+
+
+State 83
+
+   53 exp: exp . '+' exp
+   54    | exp . '-' exp
+   55    | exp . '*' exp
+   56    | exp . '/' exp
+   58    | '(' exp . ')'
+   59    | exp . EQUAL exp
+   60    | exp . NE exp
+   61    | exp . '<' exp
+   62    | exp . '>' exp
+   63    | exp . LTE exp
+   64    | exp . GTE exp
+   65    | exp . OR exp
+   66    | exp . AND exp
+   68    | exp . '?' exp ':' exp
+
+    AND    shift, and go to state 84
+    OR     shift, and go to state 85
+    GTE    shift, and go to state 86
+    LTE    shift, and go to state 87
+    NE     shift, and go to state 88
+    EQUAL  shift, and go to state 89
+    '?'    shift, and go to state 90
+    '<'    shift, and go to state 91
+    '>'    shift, and go to state 92
+    '+'    shift, and go to state 93
+    '-'    shift, and go to state 94
+    '*'    shift, and go to state 95
+    '/'    shift, and go to state 96
+    ')'    shift, and go to state 102
+
+
+State 84
+
+   66 exp: exp AND . exp
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 103
+
+
+State 85
+
+   65 exp: exp OR . exp
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 104
+
+
+State 86
+
+   64 exp: exp GTE . exp
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 105
+
+
+State 87
+
+   63 exp: exp LTE . exp
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 106
+
+
+State 88
+
+   60 exp: exp NE . exp
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 107
+
+
+State 89
+
+   59 exp: exp EQUAL . exp
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 108
+
+
+State 90
+
+   68 exp: exp '?' . exp ':' exp
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 109
+
+
+State 91
+
+   61 exp: exp '<' . exp
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 110
+
+
+State 92
+
+   62 exp: exp '>' . exp
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 111
+
+
+State 93
+
+   53 exp: exp '+' . exp
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 112
+
+
+State 94
+
+   54 exp: exp '-' . exp
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 113
+
+
+State 95
+
+   55 exp: exp '*' . exp
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 114
+
+
+State 96
+
+   56 exp: exp '/' . exp
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 115
+
+
+State 97
+
+   48 assignment: NAME '=' exp ';' .
+
+    $default  reduce using rule 48 (assignment)
+
+
+State 98
+
+   37 do_while_stmt: DO '{' statement_list '}' . WHILE '(' exp ')' ';'
+
+    WHILE  shift, and go to state 116
+
+
+State 99
+
+   36 do_while_stmt: DO statement WHILE '(' . exp ')' ';'
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 117
+
+
+State 100
+
+   34 while_stmt: WHILE '(' exp ')' . statement
+   35           | WHILE '(' exp ')' . '{' statement_list '}'
+
+    NAME   shift, and go to state 35
+    WRITE  shift, and go to state 36
+    READ   shift, and go to state 37
+    DO     shift, and go to state 38
+    WHILE  shift, and go to state 39
+    IF     shift, and go to state 40
+    '{'    shift, and go to state 118
+
+    statement      go to state 119
+    while_stmt     go to state 56
+    do_while_stmt  go to state 57
+    if_else_stmt   go to state 58
+    print          go to state 59
+    read           go to state 60
+    assignment     go to state 61
+
+
+State 101
+
+   38 if_else_stmt: IF '(' exp ')' . statement optional_else_stmt
+   39             | IF '(' exp ')' . '{' statement_list '}' optional_else_stmt
+
+    NAME   shift, and go to state 35
+    WRITE  shift, and go to state 36
+    READ   shift, and go to state 37
+    DO     shift, and go to state 38
+    WHILE  shift, and go to state 39
+    IF     shift, and go to state 40
+    '{'    shift, and go to state 120
+
+    statement      go to state 121
+    while_stmt     go to state 56
+    do_while_stmt  go to state 57
+    if_else_stmt   go to state 58
+    print          go to state 59
+    read           go to state 60
+    assignment     go to state 61
+
+
+State 102
+
+   58 exp: '(' exp ')' .
+
+    $default  reduce using rule 58 (exp)
+
+
+State 103
+
+   53 exp: exp . '+' exp
+   54    | exp . '-' exp
+   55    | exp . '*' exp
+   56    | exp . '/' exp
+   59    | exp . EQUAL exp
+   60    | exp . NE exp
+   61    | exp . '<' exp
+   62    | exp . '>' exp
+   63    | exp . LTE exp
+   64    | exp . GTE exp
+   65    | exp . OR exp
+   66    | exp . AND exp
+   66    | exp AND exp .
+   68    | exp . '?' exp ':' exp
+
+    GTE    shift, and go to state 86
+    LTE    shift, and go to state 87
+    NE     shift, and go to state 88
+    EQUAL  shift, and go to state 89
+    '<'    shift, and go to state 91
+    '>'    shift, and go to state 92
+    '+'    shift, and go to state 93
+    '-'    shift, and go to state 94
+    '*'    shift, and go to state 95
+    '/'    shift, and go to state 96
+
+    $default  reduce using rule 66 (exp)
+
+
+State 104
+
+   53 exp: exp . '+' exp
+   54    | exp . '-' exp
+   55    | exp . '*' exp
+   56    | exp . '/' exp
+   59    | exp . EQUAL exp
+   60    | exp . NE exp
+   61    | exp . '<' exp
+   62    | exp . '>' exp
+   63    | exp . LTE exp
+   64    | exp . GTE exp
+   65    | exp . OR exp
+   65    | exp OR exp .
+   66    | exp . AND exp
+   68    | exp . '?' exp ':' exp
+
+    AND    shift, and go to state 84
+    GTE    shift, and go to state 86
+    LTE    shift, and go to state 87
+    NE     shift, and go to state 88
+    EQUAL  shift, and go to state 89
+    '<'    shift, and go to state 91
+    '>'    shift, and go to state 92
+    '+'    shift, and go to state 93
+    '-'    shift, and go to state 94
+    '*'    shift, and go to state 95
+    '/'    shift, and go to state 96
+
+    $default  reduce using rule 65 (exp)
+
+
+State 105
+
+   53 exp: exp . '+' exp
+   54    | exp . '-' exp
+   55    | exp . '*' exp
+   56    | exp . '/' exp
+   59    | exp . EQUAL exp
+   60    | exp . NE exp
+   61    | exp . '<' exp
+   62    | exp . '>' exp
+   63    | exp . LTE exp
+   64    | exp . GTE exp
+   64    | exp GTE exp .
+   65    | exp . OR exp
+   66    | exp . AND exp
+   68    | exp . '?' exp ':' exp
+
+    '+'  shift, and go to state 93
+    '-'  shift, and go to state 94
+    '*'  shift, and go to state 95
+    '/'  shift, and go to state 96
+
+    GTE    error (nonassociative)
+    LTE    error (nonassociative)
+    NE     error (nonassociative)
+    EQUAL  error (nonassociative)
+    '<'    error (nonassociative)
+    '>'    error (nonassociative)
+
+    $default  reduce using rule 64 (exp)
+
+
+State 106
+
+   53 exp: exp . '+' exp
+   54    | exp . '-' exp
+   55    | exp . '*' exp
+   56    | exp . '/' exp
+   59    | exp . EQUAL exp
+   60    | exp . NE exp
+   61    | exp . '<' exp
+   62    | exp . '>' exp
+   63    | exp . LTE exp
+   63    | exp LTE exp .
+   64    | exp . GTE exp
+   65    | exp . OR exp
+   66    | exp . AND exp
+   68    | exp . '?' exp ':' exp
+
+    '+'  shift, and go to state 93
+    '-'  shift, and go to state 94
+    '*'  shift, and go to state 95
+    '/'  shift, and go to state 96
+
+    GTE    error (nonassociative)
+    LTE    error (nonassociative)
+    NE     error (nonassociative)
+    EQUAL  error (nonassociative)
+    '<'    error (nonassociative)
+    '>'    error (nonassociative)
+
+    $default  reduce using rule 63 (exp)
+
+
+State 107
+
+   53 exp: exp . '+' exp
+   54    | exp . '-' exp
+   55    | exp . '*' exp
+   56    | exp . '/' exp
+   59    | exp . EQUAL exp
+   60    | exp . NE exp
+   60    | exp NE exp .
+   61    | exp . '<' exp
+   62    | exp . '>' exp
+   63    | exp . LTE exp
+   64    | exp . GTE exp
+   65    | exp . OR exp
+   66    | exp . AND exp
+   68    | exp . '?' exp ':' exp
+
+    '+'  shift, and go to state 93
+    '-'  shift, and go to state 94
+    '*'  shift, and go to state 95
+    '/'  shift, and go to state 96
+
+    GTE    error (nonassociative)
+    LTE    error (nonassociative)
+    NE     error (nonassociative)
+    EQUAL  error (nonassociative)
+    '<'    error (nonassociative)
+    '>'    error (nonassociative)
+
+    $default  reduce using rule 60 (exp)
+
+
+State 108
+
+   53 exp: exp . '+' exp
+   54    | exp . '-' exp
+   55    | exp . '*' exp
+   56    | exp . '/' exp
+   59    | exp . EQUAL exp
+   59    | exp EQUAL exp .
+   60    | exp . NE exp
+   61    | exp . '<' exp
+   62    | exp . '>' exp
+   63    | exp . LTE exp
+   64    | exp . GTE exp
+   65    | exp . OR exp
+   66    | exp . AND exp
+   68    | exp . '?' exp ':' exp
+
+    '+'  shift, and go to state 93
+    '-'  shift, and go to state 94
+    '*'  shift, and go to state 95
+    '/'  shift, and go to state 96
+
+    GTE    error (nonassociative)
+    LTE    error (nonassociative)
+    NE     error (nonassociative)
+    EQUAL  error (nonassociative)
+    '<'    error (nonassociative)
+    '>'    error (nonassociative)
+
+    $default  reduce using rule 59 (exp)
+
+
+State 109
+
+   53 exp: exp . '+' exp
+   54    | exp . '-' exp
+   55    | exp . '*' exp
+   56    | exp . '/' exp
+   59    | exp . EQUAL exp
+   60    | exp . NE exp
+   61    | exp . '<' exp
+   62    | exp . '>' exp
+   63    | exp . LTE exp
+   64    | exp . GTE exp
+   65    | exp . OR exp
+   66    | exp . AND exp
+   68    | exp . '?' exp ':' exp
+   68    | exp '?' exp . ':' exp
+
+    AND    shift, and go to state 84
+    OR     shift, and go to state 85
+    GTE    shift, and go to state 86
+    LTE    shift, and go to state 87
+    NE     shift, and go to state 88
+    EQUAL  shift, and go to state 89
+    '?'    shift, and go to state 90
+    ':'    shift, and go to state 122
+    '<'    shift, and go to state 91
+    '>'    shift, and go to state 92
+    '+'    shift, and go to state 93
+    '-'    shift, and go to state 94
+    '*'    shift, and go to state 95
+    '/'    shift, and go to state 96
+
+
+State 110
+
+   53 exp: exp . '+' exp
+   54    | exp . '-' exp
+   55    | exp . '*' exp
+   56    | exp . '/' exp
+   59    | exp . EQUAL exp
+   60    | exp . NE exp
+   61    | exp . '<' exp
+   61    | exp '<' exp .
+   62    | exp . '>' exp
+   63    | exp . LTE exp
+   64    | exp . GTE exp
+   65    | exp . OR exp
+   66    | exp . AND exp
+   68    | exp . '?' exp ':' exp
+
+    '+'  shift, and go to state 93
+    '-'  shift, and go to state 94
+    '*'  shift, and go to state 95
+    '/'  shift, and go to state 96
+
+    GTE    error (nonassociative)
+    LTE    error (nonassociative)
+    NE     error (nonassociative)
+    EQUAL  error (nonassociative)
+    '<'    error (nonassociative)
+    '>'    error (nonassociative)
+
+    $default  reduce using rule 61 (exp)
+
+
+State 111
+
+   53 exp: exp . '+' exp
+   54    | exp . '-' exp
+   55    | exp . '*' exp
+   56    | exp . '/' exp
+   59    | exp . EQUAL exp
+   60    | exp . NE exp
+   61    | exp . '<' exp
+   62    | exp . '>' exp
+   62    | exp '>' exp .
+   63    | exp . LTE exp
+   64    | exp . GTE exp
+   65    | exp . OR exp
+   66    | exp . AND exp
+   68    | exp . '?' exp ':' exp
+
+    '+'  shift, and go to state 93
+    '-'  shift, and go to state 94
+    '*'  shift, and go to state 95
+    '/'  shift, and go to state 96
+
+    GTE    error (nonassociative)
+    LTE    error (nonassociative)
+    NE     error (nonassociative)
+    EQUAL  error (nonassociative)
+    '<'    error (nonassociative)
+    '>'    error (nonassociative)
+
+    $default  reduce using rule 62 (exp)
+
+
+State 112
+
+   53 exp: exp . '+' exp
+   53    | exp '+' exp .
+   54    | exp . '-' exp
+   55    | exp . '*' exp
+   56    | exp . '/' exp
+   59    | exp . EQUAL exp
+   60    | exp . NE exp
+   61    | exp . '<' exp
+   62    | exp . '>' exp
+   63    | exp . LTE exp
+   64    | exp . GTE exp
+   65    | exp . OR exp
+   66    | exp . AND exp
+   68    | exp . '?' exp ':' exp
+
+    '*'  shift, and go to state 95
+    '/'  shift, and go to state 96
+
+    $default  reduce using rule 53 (exp)
+
+
+State 113
+
+   53 exp: exp . '+' exp
+   54    | exp . '-' exp
+   54    | exp '-' exp .
+   55    | exp . '*' exp
+   56    | exp . '/' exp
+   59    | exp . EQUAL exp
+   60    | exp . NE exp
+   61    | exp . '<' exp
+   62    | exp . '>' exp
+   63    | exp . LTE exp
+   64    | exp . GTE exp
+   65    | exp . OR exp
+   66    | exp . AND exp
+   68    | exp . '?' exp ':' exp
+
+    '*'  shift, and go to state 95
+    '/'  shift, and go to state 96
+
+    $default  reduce using rule 54 (exp)
+
+
+State 114
+
+   53 exp: exp . '+' exp
+   54    | exp . '-' exp
+   55    | exp . '*' exp
+   55    | exp '*' exp .
+   56    | exp . '/' exp
+   59    | exp . EQUAL exp
+   60    | exp . NE exp
+   61    | exp . '<' exp
+   62    | exp . '>' exp
+   63    | exp . LTE exp
+   64    | exp . GTE exp
+   65    | exp . OR exp
+   66    | exp . AND exp
+   68    | exp . '?' exp ':' exp
+
+    $default  reduce using rule 55 (exp)
+
+
+State 115
+
+   53 exp: exp . '+' exp
+   54    | exp . '-' exp
+   55    | exp . '*' exp
+   56    | exp . '/' exp
+   56    | exp '/' exp .
+   59    | exp . EQUAL exp
+   60    | exp . NE exp
+   61    | exp . '<' exp
+   62    | exp . '>' exp
+   63    | exp . LTE exp
+   64    | exp . GTE exp
+   65    | exp . OR exp
+   66    | exp . AND exp
+   68    | exp . '?' exp ':' exp
+
+    $default  reduce using rule 56 (exp)
+
+
+State 116
+
+   37 do_while_stmt: DO '{' statement_list '}' WHILE . '(' exp ')' ';'
+
+    '('  shift, and go to state 123
+
+
+State 117
+
+   36 do_while_stmt: DO statement WHILE '(' exp . ')' ';'
+   53 exp: exp . '+' exp
+   54    | exp . '-' exp
+   55    | exp . '*' exp
+   56    | exp . '/' exp
+   59    | exp . EQUAL exp
+   60    | exp . NE exp
+   61    | exp . '<' exp
+   62    | exp . '>' exp
+   63    | exp . LTE exp
+   64    | exp . GTE exp
+   65    | exp . OR exp
+   66    | exp . AND exp
+   68    | exp . '?' exp ':' exp
+
+    AND    shift, and go to state 84
+    OR     shift, and go to state 85
+    GTE    shift, and go to state 86
+    LTE    shift, and go to state 87
+    NE     shift, and go to state 88
+    EQUAL  shift, and go to state 89
+    '?'    shift, and go to state 90
+    '<'    shift, and go to state 91
+    '>'    shift, and go to state 92
+    '+'    shift, and go to state 93
+    '-'    shift, and go to state 94
+    '*'    shift, and go to state 95
+    '/'    shift, and go to state 96
+    ')'    shift, and go to state 124
+
+
+State 118
+
+   35 while_stmt: WHILE '(' exp ')' '{' . statement_list '}'
+
+    $default  reduce using rule 21 (statement_list)
+
+    statement_list  go to state 125
+
+
+State 119
+
+   34 while_stmt: WHILE '(' exp ')' statement .
+
+    $default  reduce using rule 34 (while_stmt)
+
+
+State 120
+
+   39 if_else_stmt: IF '(' exp ')' '{' . statement_list '}' optional_else_stmt
+
+    $default  reduce using rule 21 (statement_list)
+
+    statement_list  go to state 126
+
+
+State 121
+
+   38 if_else_stmt: IF '(' exp ')' statement . optional_else_stmt
+
+    ELSE  shift, and go to state 127
+
+    ELSE      [reduce using rule 40 (optional_else_stmt)]
+    $default  reduce using rule 40 (optional_else_stmt)
+
+    optional_else_stmt  go to state 128
+
+
+State 122
+
+   68 exp: exp '?' exp ':' . exp
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 129
+
+
+State 123
+
+   37 do_while_stmt: DO '{' statement_list '}' WHILE '(' . exp ')' ';'
+
+    NUM           shift, and go to state 64
+    FNUM          shift, and go to state 65
+    NAME          shift, and go to state 66
+    STR_CONSTANT  shift, and go to state 67
+    '!'           shift, and go to state 68
+    '-'           shift, and go to state 69
+    '('           shift, and go to state 70
+
+    exp  go to state 130
+
+
+State 124
+
+   36 do_while_stmt: DO statement WHILE '(' exp ')' . ';'
+
+    ';'  shift, and go to state 131
+
+
+State 125
+
+   22 statement_list: statement_list . assignment
+   23               | statement_list . print
+   24               | statement_list . read
+   25               | statement_list . while_stmt
+   26               | statement_list . do_while_stmt
+   27               | statement_list . if_else_stmt
+   35 while_stmt: WHILE '(' exp ')' '{' statement_list . '}'
+
+    NAME   shift, and go to state 35
+    WRITE  shift, and go to state 36
+    READ   shift, and go to state 37
+    DO     shift, and go to state 38
+    WHILE  shift, and go to state 39
+    IF     shift, and go to state 40
+    '}'    shift, and go to state 132
+
+    while_stmt     go to state 42
+    do_while_stmt  go to state 43
+    if_else_stmt   go to state 44
+    print          go to state 45
+    read           go to state 46
+    assignment     go to state 47
+
+
+State 126
+
+   22 statement_list: statement_list . assignment
+   23               | statement_list . print
+   24               | statement_list . read
+   25               | statement_list . while_stmt
+   26               | statement_list . do_while_stmt
+   27               | statement_list . if_else_stmt
+   39 if_else_stmt: IF '(' exp ')' '{' statement_list . '}' optional_else_stmt
+
+    NAME   shift, and go to state 35
+    WRITE  shift, and go to state 36
+    READ   shift, and go to state 37
+    DO     shift, and go to state 38
+    WHILE  shift, and go to state 39
+    IF     shift, and go to state 40
+    '}'    shift, and go to state 133
+
+    while_stmt     go to state 42
+    do_while_stmt  go to state 43
+    if_else_stmt   go to state 44
+    print          go to state 45
+    read           go to state 46
+    assignment     go to state 47
+
+
+State 127
+
+   41 optional_else_stmt: ELSE . statement
+   42                   | ELSE . '{' statement_list '}'
+
+    NAME   shift, and go to state 35
+    WRITE  shift, and go to state 36
+    READ   shift, and go to state 37
+    DO     shift, and go to state 38
+    WHILE  shift, and go to state 39
+    IF     shift, and go to state 40
+    '{'    shift, and go to state 134
+
+    statement      go to state 135
+    while_stmt     go to state 56
+    do_while_stmt  go to state 57
+    if_else_stmt   go to state 58
+    print          go to state 59
+    read           go to state 60
+    assignment     go to state 61
+
+
+State 128
+
+   38 if_else_stmt: IF '(' exp ')' statement optional_else_stmt .
+
+    $default  reduce using rule 38 (if_else_stmt)
+
+
+State 129
+
+   53 exp: exp . '+' exp
+   54    | exp . '-' exp
+   55    | exp . '*' exp
+   56    | exp . '/' exp
+   59    | exp . EQUAL exp
+   60    | exp . NE exp
+   61    | exp . '<' exp
+   62    | exp . '>' exp
+   63    | exp . LTE exp
+   64    | exp . GTE exp
+   65    | exp . OR exp
+   66    | exp . AND exp
+   68    | exp . '?' exp ':' exp
+   68    | exp '?' exp ':' exp .
+
+    AND    shift, and go to state 84
+    OR     shift, and go to state 85
+    GTE    shift, and go to state 86
+    LTE    shift, and go to state 87
+    NE     shift, and go to state 88
+    EQUAL  shift, and go to state 89
+    '?'    shift, and go to state 90
+    '<'    shift, and go to state 91
+    '>'    shift, and go to state 92
+    '+'    shift, and go to state 93
+    '-'    shift, and go to state 94
+    '*'    shift, and go to state 95
+    '/'    shift, and go to state 96
+
+    $default  reduce using rule 68 (exp)
+
+
+State 130
+
+   37 do_while_stmt: DO '{' statement_list '}' WHILE '(' exp . ')' ';'
+   53 exp: exp . '+' exp
+   54    | exp . '-' exp
+   55    | exp . '*' exp
+   56    | exp . '/' exp
+   59    | exp . EQUAL exp
+   60    | exp . NE exp
+   61    | exp . '<' exp
+   62    | exp . '>' exp
+   63    | exp . LTE exp
+   64    | exp . GTE exp
+   65    | exp . OR exp
+   66    | exp . AND exp
+   68    | exp . '?' exp ':' exp
+
+    AND    shift, and go to state 84
+    OR     shift, and go to state 85
+    GTE    shift, and go to state 86
+    LTE    shift, and go to state 87
+    NE     shift, and go to state 88
+    EQUAL  shift, and go to state 89
+    '?'    shift, and go to state 90
+    '<'    shift, and go to state 91
+    '>'    shift, and go to state 92
+    '+'    shift, and go to state 93
+    '-'    shift, and go to state 94
+    '*'    shift, and go to state 95
+    '/'    shift, and go to state 96
+    ')'    shift, and go to state 136
+
+
+State 131
+
+   36 do_while_stmt: DO statement WHILE '(' exp ')' ';' .
+
+    $default  reduce using rule 36 (do_while_stmt)
+
+
+State 132
+
+   35 while_stmt: WHILE '(' exp ')' '{' statement_list '}' .
+
+    $default  reduce using rule 35 (while_stmt)
+
+
+State 133
+
+   39 if_else_stmt: IF '(' exp ')' '{' statement_list '}' . optional_else_stmt
+
+    ELSE  shift, and go to state 127
+
+    ELSE      [reduce using rule 40 (optional_else_stmt)]
+    $default  reduce using rule 40 (optional_else_stmt)
+
+    optional_else_stmt  go to state 137
+
+
+State 134
+
+   42 optional_else_stmt: ELSE '{' . statement_list '}'
+
+    $default  reduce using rule 21 (statement_list)
+
+    statement_list  go to state 138
+
+
+State 135
+
+   41 optional_else_stmt: ELSE statement .
+
+    $default  reduce using rule 41 (optional_else_stmt)
+
+
+State 136
+
+   37 do_while_stmt: DO '{' statement_list '}' WHILE '(' exp ')' . ';'
+
+    ';'  shift, and go to state 139
+
+
+State 137
+
+   39 if_else_stmt: IF '(' exp ')' '{' statement_list '}' optional_else_stmt .
+
+    $default  reduce using rule 39 (if_else_stmt)
+
+
+State 138
+
+   22 statement_list: statement_list . assignment
+   23               | statement_list . print
+   24               | statement_list . read
+   25               | statement_list . while_stmt
+   26               | statement_list . do_while_stmt
+   27               | statement_list . if_else_stmt
+   42 optional_else_stmt: ELSE '{' statement_list . '}'
+
+    NAME   shift, and go to state 35
+    WRITE  shift, and go to state 36
+    READ   shift, and go to state 37
+    DO     shift, and go to state 38
+    WHILE  shift, and go to state 39
+    IF     shift, and go to state 40
+    '}'    shift, and go to state 140
+
+    while_stmt     go to state 42
+    do_while_stmt  go to state 43
+    if_else_stmt   go to state 44
+    print          go to state 45
+    read           go to state 46
+    assignment     go to state 47
+
+
+State 139
+
+   37 do_while_stmt: DO '{' statement_list '}' WHILE '(' exp ')' ';' .
+
+    $default  reduce using rule 37 (do_while_stmt)
+
+
+State 140
+
+   42 optional_else_stmt: ELSE '{' statement_list '}' .
+
+    $default  reduce using rule 42 (optional_else_stmt)
