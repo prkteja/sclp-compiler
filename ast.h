@@ -26,35 +26,6 @@ typedef union {
 } node_val;
 
 
-// typedef struct{
-// 	node_type type;
-// 	data_type return_type;
-// 	union {
-// 		assgn_stmt_node* assgn_stmt;
-// 		read_stmt_node* read_stmt;
-// 		write_stmt_node* write_stmt;
-// 		bin_op_node* bin_op;
-// 		ter_op_node* ter_op;
-// 		un_op_node* un_op;
-// 		id_node* id;
-// 		const_node* constant;
-// 	}
-// } child_node;
-
-// class ast_node;
-// class assgn_stmt_node;
-// class read_stmt_node;
-// class write_stmt_node;
-// class un_op_node;
-// class bin_op_node;
-// class ter_op_node;
-// class id_node;
-// class const_node;
-// class while_node;
-// class do_while_node;
-// class if_else_node;
-// class stmt_list_node;
-
 class ast_node{
 // protected:
 public:
@@ -69,18 +40,6 @@ public:
 public:
 	ast_node();
 	ast_node(ast_node* ast);
-	// ast_node(assgn_stmt_node* node);
-	// ast_node(write_stmt_node* node);
-	// ast_node(read_stmt_node* node);
-	// ast_node(un_op_node* node);
-	// ast_node(bin_op_node* node);
-	// ast_node(ter_op_node* node);
-	// ast_node(id_node* node);
-	// ast_node(const_node* node);
-	// ast_node(while_node* node);
-	// ast_node(do_while_node* node);
-	// ast_node(if_else_node* node);
-	// ast_node(stmt_list_node* node);
 	ast_node(node_type type, int lineno);
 	ast_node(node_type type, node_val lval, data_type return_type, int lineno);
 	ast_node(node_type type, un_op_val_type val_type, int lineno);
@@ -91,82 +50,6 @@ public:
 	string str_val();
 };
 
-/*
-
-
-class assgn_stmt_node: public ast_node{public:
-	node_type type = assgn_stmt_type;
-public:s
-	assgn_stmt_node(int lineno);
-};
-
-class read_stmt_node: public ast_node{public:
-	node_type type = read_stmt_type;
-	public:
-	read_stmt_node(int lineno);
-};
-
-class write_stmt_node: public ast_node{public:
-	node_type type = write_stmt_type;
-	public:
-	write_stmt_node(int lineno);
-};
-
-class const_node: public ast_node{public:
-	node_type type = const_type	;
-	public:
-	const_node(node_val lval, data_type return_type, int lineno);
-};
-
-class un_op_node: public ast_node{public:
-	node_type type = un_op_type;
-	public:
-	un_op_node(un_op_val_type type, int lineno);
-};
-
-class bin_op_node: public ast_node{public:
-	node_type type = bin_op_type;
-	public:
-	bin_op_node(bin_op_val_type type, int lineno);
-};
-
-class ter_op_node: public ast_node{public:
-	node_type type = ter_op_type;
-	public:
-	ter_op_node(int lineno);
-};
-
-class id_node: public ast_node{public:
-	node_type type = id_type;
-	public:
-	id_node(string* lval, data_type return_type, int lineno);
-};
-
-class while_node: public ast_node{
-public:
-	node_type type = while_type;
-	while_node(int lineno);
-};
-
-class do_while_node: public ast_node{
-public:
-	node_type type = do_while_type;
-	do_while_node(int lineno);
-};
-
-class if_else_node: public ast_node{
-public:
-	node_type type = if_else_type;
-	if_else_node(int lineno);
-};
-
-class stmt_list_node: public ast_node{
-public:
-	node_type type = stmt_list_type;
-	stmt_list_node(int lineno);
-}
-
-*/
 
 class procedure_node{
 public:

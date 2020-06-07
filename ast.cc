@@ -3,8 +3,7 @@
 
 using namespace std;
 
-bool ast_node::add_child(ast_node* child){//cout << this->type << assgn_stmt_type << un_op_type <<"switch";
-	switch (this->type){
+bool ast_node::add_child(ast_node* child){
 		case assgn_stmt_type: {
 			if(this->num_child > 1){
 				cerr << "Node of assignment statement at line " << this->lineno << " already has 2 children\n";
@@ -211,111 +210,6 @@ bool ast_node::add_child(ast_node* child){//cout << this->type << assgn_stmt_typ
 };
 
 
-/*
-
-assgn_stmt_node::assgn_stmt_node(int lineno){
-	this->type = assgn_stmt_type;
-	this->num_child = 0;
-	this->return_type = null_type;
-	this->lineno = lineno;
-	// this->lval.bin_op_val = assgn_val;
-};
-
-read_stmt_node::read_stmt_node(int lineno){
-	this->type = read_stmt_type;
-	this->num_child = 0;
-	this->return_type = null_type;
-	this->lineno = lineno;
-	// this->lval.un_op_val = read_val;
-};
-
-write_stmt_node::write_stmt_node(int lineno){
-	this->type = write_stmt_type;
-	this->num_child = 0;
-	this->return_type = null_type;
-	this->lineno = lineno;
-	// this->lval.un_op_val = write_val;
-};
-
-const_node::const_node(node_val lval, data_type return_type, int lineno){
-	if(return_type == void_type || return_type == null_type) {
-		cerr << "Constant cannot be void at line "<< lineno <<"\n";
-		exit(1);
-	}
-	this->type = const_type;
-	this->num_child = 0;
-	this->return_type = return_type;
-	this->lineno = lineno;
-	this->lval = lval;
-};
-
-un_op_node::un_op_node(un_op_val_type type, int lineno){
-	this->type = un_op_type;
-	this->num_child = 0;
-	this->return_type = null_type;
-	this->lineno = lineno;
-	this->lval.un_op_val = type;
-};
-
-bin_op_node::bin_op_node(bin_op_val_type type, int lineno){
-	this->type = bin_op_type;
-	this->num_child = 0;
-	this->return_type = null_type;
-	this->lineno = lineno;
-	this->lval.bin_op_val = type;
-};
-
-ter_op_node::ter_op_node(int lineno){
-	this->type = ter_op_type;
-	this->num_child = 0;
-	this->return_type = null_type;
-	this->lineno = lineno;
-	this->lval.ter_op_val = ter_cond_val;
-};
-
-id_node::id_node(string* lval, data_type return_type, int lineno){
-	if(return_type == void_type || return_type == null_type) {
-		cerr << "ID cannot be void at line "<< lineno <<"\n";
-		exit(1);
-	}
-	this->type = id_type;
-	this->num_child = 0;
-	this->return_type = return_type;
-	this->lineno = lineno;
-	this->lval.id_val = lval;
-};
-
-while_node::while_node(int lineno){
-	this->type = while_type;
-	this->num_child = 0;
-	this->return_type = null_type;
-	this->lineno = lineno;
-};
-
-do_while_node::do_while_node(int lineno){
-	this->type = do_while_type;
-	this->num_child = 0;
-	this->return_type = null_type;
-	this->lineno = lineno;
-};
-
-if_else_node::if_else_node(int lineno){
-	this->type = if_else_type;
-	this->num_child = 0;
-	this->return_type = null_type;
-	this->lineno = lineno;
-};
-
-stmt_list_node::stmt_list_node(int lineno){
-	this->type = while_type;
-	this->num_child = 0;
-	this->return_type = null_type;
-	this->lineno = lineno;
-};
-
-*/
-
-
 void ast_node::print_node(FILE* out){
 	if(this->type == assgn_stmt_type){
 		fprintf(out, "Asgn:\n");
@@ -460,12 +354,6 @@ void procedure_node::add_arg(vector<symbol_table_entry*> arg){
 };
 
 void procedure_node::add_stmt_list(vector<ast_node*> stmt_list){
-	// if(stmt->type != assgn_stmt_type && stmt->type != write_stmt_type && stmt->type != read_stmt_type) {
-	// 	cerr << "sentence at line "<< stmt->lineno << " is not a statement\n";
-	// 	exit(1);
-	// }else{
-	// 	this->stmt_list.push_back(stmt);
-	// }
 	this->stmt_list = stmt_list;
 };
 
@@ -478,10 +366,8 @@ void procedure_node::print_node(FILE* out){
 		case string_type: {d_type = "STRING";break;};
 		case null_type: {d_type = "NULL";break;};
 	};
-	// cout << "**PROCEDURE: "<< *(this->lval.id_val) <<", Return Type: " << d_type <<"\n**BEGIN: Abstract Syntax Tree\n";
 	fprintf(out, "**PROCEDURE: %s, Return Type: %s\n", (*(this->lval.id_val)).c_str(), d_type.c_str());
-	//cout<<this->arg_list.size()<<endl;
-	for(int i=0; i<this->arg_list.size(); i++){//cout<<"ajk\n";
+	for(int i=0; i<this->arg_list.size(); i++){
 		string arg_d_type;
 		switch(this->arg_list[i]->get_data_type()){
 			case int_type: {arg_d_type = "INT";break;};
@@ -511,83 +397,6 @@ void program_node::add_procedure(procedure_node* proc){
 };
 
 
-/*
-
-ast_node::ast_node(assgn_stmt_node* node){
-	this->type = node->type;
-	this->num_child = node->num_child;
-	this->return_type = node->return_type;
-	this->lval = node->lval;
-	this->lineno = node->lineno;
-	this->children = node->children;
-	this->tac_built = false;
-};
-ast_node::ast_node(write_stmt_node* node){
-	this->type = node->type;
-	this->num_child = node->num_child;
-	this->return_type = node->return_type;
-	this->lval = node->lval;
-	this->lineno = node->lineno;
-	this->children = node->children;
-	this->tac_built = false;
-};
-ast_node::ast_node(read_stmt_node* node){
-	this->type = node->type;
-	this->num_child = node->num_child;
-	this->return_type = node->return_type;
-	this->lval = node->lval;
-	this->lineno = node->lineno;
-	this->children = node->children;
-	this->tac_built = false;
-};
-ast_node::ast_node(un_op_node* node){
-	this->type = node->type;
-	this->num_child = node->num_child;
-	this->return_type = node->return_type;
-	this->lval = node->lval;
-	this->lineno = node->lineno;
-	this->children = node->children;
-	this->tac_built = false;
-};
-ast_node::ast_node(bin_op_node* node){
-	this->type = node->type;
-	this->num_child = node->num_child;
-	this->return_type = node->return_type;
-	this->lval = node->lval;
-	this->lineno = node->lineno;
-	this->children = node->children;
-	this->tac_built = false;
-};
-ast_node::ast_node(ter_op_node* node){
-	this->type = node->type;
-	this->num_child = node->num_child;
-	this->return_type = node->return_type;
-	this->lval = node->lval;
-	this->lineno = node->lineno;
-	this->children = node->children;
-	this->tac_built = false;
-};
-ast_node::ast_node(id_node* node){
-	this->type = node->type;
-	this->num_child = node->num_child;
-	this->return_type = node->return_type;
-	this->lval = node->lval;
-	this->lineno = node->lineno;
-	this->children = node->children;
-	this->tac_built = false;
-};
-ast_node::ast_node(const_node* node){
-	this->type = node->type;
-	this->num_child = node->num_child;
-	this->return_type = node->return_type;
-	this->lval = node->lval;
-	this->lineno = node->lineno;
-	this->children = node->children;
-	this->tac_built = false;
-};
-
-*/
-
 ast_node::ast_node(ast_node* node){
 	this->type = node->type;
 	this->num_child = node->num_child;
@@ -599,13 +408,6 @@ ast_node::ast_node(ast_node* node){
 };
 
 
-/**/
-
-// ast_node::ast_node(while_node* node){
-// 	//i feel like an idiot
-
-// }
-
 ast_node::ast_node(){
 	this->tac_built = false;
 };
@@ -615,18 +417,6 @@ string ftos(float a){
 	stream << fixed << setprecision(2) << a;
 	return stream.str();
 };
-
-// string str_val(){
-// 	if(this->type == id_type) return *(this->lval.id_val) + "_";
-// 	else if(this->type == const_type){
-// 		if(this->return_type == int_type) return to_string(this->lval.const_int_val);
-// 		else if(this->return_type == float_type) return ftos(this->lval.const_float_val);
-// 		else if(this->return_type == string_type) return "\"" + *(this->lval.const_string_val) + "\"";
-// 		else return "";
-// 	}else return "";
-// };
-
-
 
 
 ast_node::ast_node(node_type type, int lineno){
