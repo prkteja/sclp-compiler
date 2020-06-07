@@ -186,10 +186,10 @@ Nonterminals, with rules where they appear
     do_while_stmt <ast> (56)
         on left: 31 32
         on right: 27
-    if_else_stmt (57)
+    if_else_stmt <ast> (57)
         on left: 33 34
         on right: 28
-    optional_else_stmt (58)
+    optional_else_stmt <ast> (58)
         on left: 35 36 37
         on right: 33 34
     print <ast> (59)

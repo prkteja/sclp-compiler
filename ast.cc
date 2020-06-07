@@ -106,12 +106,14 @@ bool ast_node::add_child(ast_node* child){//cout << this->type << assgn_stmt_typ
 			if(this->lval.un_op_val == uminus_val){
 				if(child->return_type != int_type && child->return_type != float_type){
 					cerr << "Incompatible argument type for uminus at line " << this->lineno << "\n";
+					exit(1);
 				}else{
 					this->return_type = child->return_type;
 				}
 			} else {
 				if(child->return_type != bool_type){
 					cerr << "Incompatible argument type for negation at line " << this->lineno << "\n";
+					exit(1);
 				} else{
 					this->return_type = child->return_type;
 				}
@@ -160,9 +162,11 @@ bool ast_node::add_child(ast_node* child){//cout << this->type << assgn_stmt_typ
 			}else if(this->num_child == 1){
 				if(child->type != stmt_list_type){
 					cerr << "Body of while must be a statement list at line " << this->lineno << "\n";
+					exit(1);
 				}
 			}else{
 				cerr << "Too many arguments for node 'while' at line "<< this->lineno << "\n";
+				exit(1);
 			};
 			break;
 		};
@@ -175,9 +179,11 @@ bool ast_node::add_child(ast_node* child){//cout << this->type << assgn_stmt_typ
 			}else if(this->num_child == 0){
 				if(child->type != stmt_list_type){
 					cerr << "Body of do must be a statement list at line " << this->lineno << "\n";
+					exit(1);
 				}
 			}else{
 				cerr << "Too many arguments for node 'do_while' at line "<< this->lineno << "\n";
+				exit(1);
 			};
 			break;
 		};
@@ -190,9 +196,11 @@ bool ast_node::add_child(ast_node* child){//cout << this->type << assgn_stmt_typ
 			}else if(this->num_child == 1 || this->num_child == 2){
 				if(child->type != stmt_list_type){
 					cerr << "Body of while must be a statement list at line " << this->lineno << "\n";
+					exit(1);
 				}
 			}else{
 				cerr << "Too many arguments for node 'if_else' at line "<< this->lineno << "\n";
+				exit(1);
 			};
 			break;
 		}

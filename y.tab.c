@@ -588,12 +588,12 @@ static const yytype_int8 yytranslate[] =
 static const yytype_int16 yyrline[] =
 {
        0,   100,   100,   115,   129,   135,   162,   168,   174,   181,
-     187,   195,   201,   208,   219,   225,   233,   324,   330,   347,
-     377,   386,   432,   438,   447,   447,   447,   447,   447,   447,
-     450,   451,   452,   453,   454,   455,   456,   457,   458,   462,
-     486,   499,   512,   527,   552,   585,   597,   608,   618,   636,
-     647,   658,   669,   680,   689,   695,   706,   717,   728,   739,
-     750,   761,   772,   783,   792
+     187,   195,   201,   208,   220,   225,   233,   325,   330,   347,
+     377,   386,   433,   438,   447,   447,   447,   447,   447,   447,
+     450,   460,   471,   481,   492,   503,   516,   521,   530,   543,
+     567,   580,   593,   608,   633,   666,   678,   689,   699,   717,
+     728,   739,   750,   761,   770,   776,   787,   798,   809,   820,
+     831,   842,   853,   864,   873
 };
 #endif
 
@@ -1521,7 +1521,7 @@ yyreduce:
                               {
 			if(command_options.construct_ast()){
 				(yyval.program) = new program_node();
-				(yyval.program)->add_procedure((yyvsp[0].procedure));cout << "added procedure def\n";
+				(yyval.program)->add_procedure((yyvsp[0].procedure));
 				if(command_options.is_show_ast_selected()){ 
 					string file_name = command_options.get_file_name();
 					if(!command_options.is_demo_mode_selected()){
@@ -1751,7 +1751,7 @@ yyreduce:
 										(yyval.procedure) = new procedure_node(void_type,(yyvsp[-7].id),local_symtab,yylineno);
 										(yyval.procedure)->add_stmt_list(*(yyvsp[-1].ast_node_list));
 										(yyval.procedure)->add_arg(*(yyvsp[-5].symbol_table_entry_list));
-										if(command_options.construct_tac()||true){
+										if(command_options.construct_tac()){
 											vector<tac_stmt> taclist = build_tac((yyval.procedure));
 											if(command_options.is_show_tac_selected()){ 
 												string file_name = command_options.get_file_name();
@@ -1874,15 +1874,137 @@ yyreduce:
 #line 439 "parse.y"
                                         {
 						if(command_options.construct_ast()){
-							(yyval.ast_node_list)->push_back((yyvsp[0].ast));	
 							(yyval.ast_node_list) = (yyvsp[-1].ast_node_list);
+							(yyval.ast_node_list)->push_back((yyvsp[0].ast));	
 						}
 					}
 #line 1882 "y.tab.c"
     break;
 
+  case 30:
+#line 451 "parse.y"
+                                        {
+						if(command_options.construct_ast()){
+							(yyval.ast) = new ast_node(while_type, yylineno);
+							if(!((yyval.ast)->add_child((yyvsp[-2].ast)))) exit(1);
+							ast_node* stmt_list_node = new ast_node(stmt_list_type, yylineno);
+							stmt_list_node->add_child((yyvsp[0].ast));
+							(yyval.ast)->add_child(stmt_list_node);
+						}
+					}
+#line 1896 "y.tab.c"
+    break;
+
+  case 31:
+#line 461 "parse.y"
+                                        {
+						if(command_options.construct_ast()){
+							(yyval.ast) = new ast_node(while_type, yylineno);
+							(yyval.ast)->add_child((yyvsp[-4].ast));
+							ast_node* stmt_list_node = new ast_node(stmt_list_type, yylineno);
+							for(int i=0; i<(yyvsp[-1].ast_node_list)->size(); i++) stmt_list_node->add_child((*(yyvsp[-1].ast_node_list))[i]);
+							(yyval.ast)->add_child(stmt_list_node);
+						}
+					}
+#line 1910 "y.tab.c"
+    break;
+
+  case 32:
+#line 472 "parse.y"
+                                        {
+						if(command_options.construct_ast()){
+							(yyval.ast) = new ast_node(do_while_type, yylineno);
+							ast_node* stmt_list_node = new ast_node(stmt_list_type, yylineno);
+							stmt_list_node->add_child((yyvsp[-5].ast));
+							(yyval.ast)->add_child(stmt_list_node);
+							(yyval.ast)->add_child((yyvsp[-2].ast));
+						}
+					}
+#line 1924 "y.tab.c"
+    break;
+
+  case 33:
+#line 482 "parse.y"
+                                        {
+						if(command_options.construct_ast()){
+							(yyval.ast) = new ast_node(do_while_type, yylineno);
+							ast_node* stmt_list_node = new ast_node(stmt_list_type, yylineno);
+							for(int i=0; i<(yyvsp[-6].ast_node_list)->size(); i++) stmt_list_node->add_child((*(yyvsp[-6].ast_node_list))[i]);
+							(yyval.ast)->add_child(stmt_list_node);
+							(yyval.ast)->add_child((yyvsp[-2].ast));
+						}
+					}
+#line 1938 "y.tab.c"
+    break;
+
+  case 34:
+#line 493 "parse.y"
+                                        {
+						if(command_options.construct_ast()){
+							(yyval.ast) = new ast_node(if_else_type, yylineno);
+							(yyval.ast)->add_child((yyvsp[-3].ast));
+							ast_node* stmt_list_node = new ast_node(stmt_list_type, yylineno);
+							stmt_list_node->add_child((yyvsp[-1].ast));
+							(yyval.ast)->add_child(stmt_list_node);
+							if((yyvsp[0].ast)->num_child > 0) (yyval.ast)->add_child((yyvsp[0].ast));
+						}
+					}
+#line 1953 "y.tab.c"
+    break;
+
+  case 35:
+#line 504 "parse.y"
+                                        {
+						if(command_options.construct_ast()){
+							(yyval.ast) = new ast_node(if_else_type, yylineno);
+							(yyval.ast)->add_child((yyvsp[-5].ast));
+							ast_node* stmt_list_node = new ast_node(stmt_list_type, yylineno);
+							for(int i=0; i<(yyvsp[-2].ast_node_list)->size(); i++) stmt_list_node->add_child((*(yyvsp[-2].ast_node_list))[i]);
+							(yyval.ast)->add_child(stmt_list_node);
+							if((yyvsp[0].ast)->num_child > 0) (yyval.ast)->add_child((yyvsp[0].ast));
+						}
+					}
+#line 1968 "y.tab.c"
+    break;
+
+  case 36:
+#line 516 "parse.y"
+                                                {
+							if(command_options.construct_ast()){
+								(yyval.ast) = new ast_node(stmt_list_type, yylineno);
+							}
+						}
+#line 1978 "y.tab.c"
+    break;
+
+  case 37:
+#line 522 "parse.y"
+                                                {
+							if(command_options.construct_ast()){
+								(yyval.ast) = new ast_node(stmt_list_type, yylineno);
+								ast_node* stmt_list_node = new ast_node(stmt_list_type, yylineno);
+								stmt_list_node->add_child((yyvsp[0].ast));
+								(yyval.ast)->add_child(stmt_list_node);
+							}
+						}
+#line 1991 "y.tab.c"
+    break;
+
+  case 38:
+#line 531 "parse.y"
+                                                {
+							if(command_options.construct_ast()){
+								(yyval.ast) = new ast_node(stmt_list_type, yylineno);
+								ast_node* stmt_list_node = new ast_node(stmt_list_type, yylineno);
+								for(int i=0; i<(yyvsp[-1].ast_node_list)->size(); i++) stmt_list_node->add_child((*(yyvsp[-1].ast_node_list))[i]);
+								(yyval.ast)->add_child(stmt_list_node);
+							}
+						}
+#line 2004 "y.tab.c"
+    break;
+
   case 39:
-#line 463 "parse.y"
+#line 544 "parse.y"
                         {
 					if(command_options.construct_ast()){
 						if(universal_symtab->check_entry(*(yyvsp[-1].id))){
@@ -1906,11 +2028,11 @@ yyreduce:
 						}
 					}
 			}
-#line 1910 "y.tab.c"
+#line 2032 "y.tab.c"
     break;
 
   case 40:
-#line 487 "parse.y"
+#line 568 "parse.y"
                         {	
 				if(command_options.construct_ast()){
 					node_val s;
@@ -1923,11 +2045,11 @@ yyreduce:
 					if(!((yyval.ast)->add_child(str))) exit(1);
 				}
 			}
-#line 1927 "y.tab.c"
+#line 2049 "y.tab.c"
     break;
 
   case 41:
-#line 500 "parse.y"
+#line 581 "parse.y"
                         {
 				if(command_options.construct_ast()){
 					node_val s;
@@ -1940,11 +2062,11 @@ yyreduce:
 					if(!((yyval.ast)->add_child(str))) exit(1);
 				}
 			}
-#line 1944 "y.tab.c"
+#line 2066 "y.tab.c"
     break;
 
   case 42:
-#line 513 "parse.y"
+#line 594 "parse.y"
                         {
 				if(command_options.construct_ast()){
 					node_val s;
@@ -1957,11 +2079,11 @@ yyreduce:
 					if(!((yyval.ast)->add_child(str))) exit(1);
 				}
 			}
-#line 1961 "y.tab.c"
+#line 2083 "y.tab.c"
     break;
 
   case 43:
-#line 528 "parse.y"
+#line 609 "parse.y"
                         {
 				if(command_options.construct_ast()){
 					if(universal_symtab->check_entry(*(yyvsp[-1].id))){
@@ -1984,11 +2106,11 @@ yyreduce:
 						{cerr << "Variable has not been declared\n";exit(1);}
 				}
 			}
-#line 1988 "y.tab.c"
+#line 2110 "y.tab.c"
     break;
 
   case 44:
-#line 553 "parse.y"
+#line 634 "parse.y"
                                 {
 					if(command_options.construct_ast()){
 						if(universal_symtab->check_entry(*(yyvsp[-3].id))){
@@ -2017,11 +2139,11 @@ yyreduce:
 							{cerr << "Variable has not been declared\n";exit(1);}
 					}
 				}
-#line 2021 "y.tab.c"
+#line 2143 "y.tab.c"
     break;
 
   case 45:
-#line 586 "parse.y"
+#line 667 "parse.y"
                         {	
 				if(command_options.construct_ast()){
 					node_val i;
@@ -2033,11 +2155,11 @@ yyreduce:
 				}
 
 			}
-#line 2037 "y.tab.c"
+#line 2159 "y.tab.c"
     break;
 
   case 46:
-#line 598 "parse.y"
+#line 679 "parse.y"
                         {	
 				if(command_options.construct_ast()){
 					node_val f;
@@ -2047,11 +2169,11 @@ yyreduce:
 					// $$ = new ast_node(node);
 				}
 			}
-#line 2051 "y.tab.c"
+#line 2173 "y.tab.c"
     break;
 
   case 47:
-#line 609 "parse.y"
+#line 690 "parse.y"
                         {	
 				if(command_options.construct_ast()){
 					node_val s;
@@ -2061,11 +2183,11 @@ yyreduce:
 					// $$ = new ast_node(node);
 				}	
 			}
-#line 2065 "y.tab.c"
+#line 2187 "y.tab.c"
     break;
 
   case 48:
-#line 619 "parse.y"
+#line 700 "parse.y"
                         {	
 				if(command_options.construct_ast()){
 					if(universal_symtab->check_entry(*(yyvsp[0].id))){
@@ -2083,11 +2205,11 @@ yyreduce:
 						{cerr << "Variable has not been declared\n";exit(1);}
 				}
 			}
-#line 2087 "y.tab.c"
+#line 2209 "y.tab.c"
     break;
 
   case 49:
-#line 637 "parse.y"
+#line 718 "parse.y"
                         {
 				if(command_options.construct_ast()){
 					(yyval.ast) = new ast_node(bin_op_type, plus_val,yylineno);
@@ -2098,11 +2220,11 @@ yyreduce:
 					(yyval.ast)->add_child((yyvsp[0].ast));
 				}
 			}
-#line 2102 "y.tab.c"
+#line 2224 "y.tab.c"
     break;
 
   case 50:
-#line 648 "parse.y"
+#line 729 "parse.y"
                         {
 				if(command_options.construct_ast()){
 					(yyval.ast) = new ast_node(bin_op_type, minus_val,yylineno);
@@ -2113,11 +2235,11 @@ yyreduce:
 					(yyval.ast)->add_child((yyvsp[0].ast));
 				}
 			}
-#line 2117 "y.tab.c"
+#line 2239 "y.tab.c"
     break;
 
   case 51:
-#line 659 "parse.y"
+#line 740 "parse.y"
                         {
 				if(command_options.construct_ast()){
 					(yyval.ast) = new ast_node(bin_op_type, mult_val,yylineno);
@@ -2128,11 +2250,11 @@ yyreduce:
 					(yyval.ast)->add_child((yyvsp[0].ast));
 				}
 			}
-#line 2132 "y.tab.c"
+#line 2254 "y.tab.c"
     break;
 
   case 52:
-#line 670 "parse.y"
+#line 751 "parse.y"
                         {
 				if(command_options.construct_ast()){
 					(yyval.ast) = new ast_node(bin_op_type, div_val,yylineno);
@@ -2143,11 +2265,11 @@ yyreduce:
 					(yyval.ast)->add_child((yyvsp[0].ast));
 				}
 			}
-#line 2147 "y.tab.c"
+#line 2269 "y.tab.c"
     break;
 
   case 53:
-#line 681 "parse.y"
+#line 762 "parse.y"
                         {
 				if(command_options.construct_ast()){
 					(yyval.ast) = new ast_node(un_op_type, uminus_val,yylineno);
@@ -2156,21 +2278,21 @@ yyreduce:
 					if(!((yyval.ast)->add_child((yyvsp[0].ast)))) {cerr << "Uminus error\n";exit(1);}
 				}
 			}
-#line 2160 "y.tab.c"
+#line 2282 "y.tab.c"
     break;
 
   case 54:
-#line 690 "parse.y"
+#line 771 "parse.y"
                         {
 				if(command_options.construct_ast()){
 					(yyval.ast) = (yyvsp[-1].ast);
 				}
 			}
-#line 2170 "y.tab.c"
+#line 2292 "y.tab.c"
     break;
 
   case 55:
-#line 696 "parse.y"
+#line 777 "parse.y"
                         {
 				if(command_options.construct_ast()){
 					(yyval.ast) = new ast_node(bin_op_type, eq_val,yylineno);
@@ -2181,11 +2303,11 @@ yyreduce:
 					(yyval.ast)->add_child((yyvsp[0].ast));
 				}
 			}
-#line 2185 "y.tab.c"
+#line 2307 "y.tab.c"
     break;
 
   case 56:
-#line 707 "parse.y"
+#line 788 "parse.y"
                         {
 				if(command_options.construct_ast()){
 					(yyval.ast) = new ast_node(bin_op_type, ne_val,yylineno);
@@ -2196,11 +2318,11 @@ yyreduce:
 					(yyval.ast)->add_child((yyvsp[0].ast));
 				}
 			}
-#line 2200 "y.tab.c"
+#line 2322 "y.tab.c"
     break;
 
   case 57:
-#line 718 "parse.y"
+#line 799 "parse.y"
                         {
 				if(command_options.construct_ast()){
 					(yyval.ast) = new ast_node(bin_op_type, lt_val,yylineno);
@@ -2211,11 +2333,11 @@ yyreduce:
 					(yyval.ast)->add_child((yyvsp[0].ast));
 				}
 			}
-#line 2215 "y.tab.c"
+#line 2337 "y.tab.c"
     break;
 
   case 58:
-#line 729 "parse.y"
+#line 810 "parse.y"
                         {
 				if(command_options.construct_ast()){
 					(yyval.ast) = new ast_node(bin_op_type, gt_val,yylineno);
@@ -2226,11 +2348,11 @@ yyreduce:
 					(yyval.ast)->add_child((yyvsp[0].ast));
 				}
 			}
-#line 2230 "y.tab.c"
+#line 2352 "y.tab.c"
     break;
 
   case 59:
-#line 740 "parse.y"
+#line 821 "parse.y"
                         {
 				if(command_options.construct_ast()){
 					(yyval.ast) = new ast_node(bin_op_type, lte_val,yylineno);
@@ -2241,11 +2363,11 @@ yyreduce:
 					(yyval.ast)->add_child((yyvsp[0].ast));
 				}
 			}
-#line 2245 "y.tab.c"
+#line 2367 "y.tab.c"
     break;
 
   case 60:
-#line 751 "parse.y"
+#line 832 "parse.y"
                         {	
 				if(command_options.construct_ast()){
 					(yyval.ast) = new ast_node(bin_op_type, gte_val,yylineno);
@@ -2256,11 +2378,11 @@ yyreduce:
 					(yyval.ast)->add_child((yyvsp[0].ast));
 				}
 			}
-#line 2260 "y.tab.c"
+#line 2382 "y.tab.c"
     break;
 
   case 61:
-#line 762 "parse.y"
+#line 843 "parse.y"
                         {
 				if(command_options.construct_ast()){
 					(yyval.ast) = new ast_node(bin_op_type, or_val,yylineno);
@@ -2271,11 +2393,11 @@ yyreduce:
 					(yyval.ast)->add_child((yyvsp[0].ast));
 				}
 			}
-#line 2275 "y.tab.c"
+#line 2397 "y.tab.c"
     break;
 
   case 62:
-#line 773 "parse.y"
+#line 854 "parse.y"
                         {
 				if(command_options.construct_ast()){
 					(yyval.ast) = new ast_node(bin_op_type, and_val,yylineno);
@@ -2286,11 +2408,11 @@ yyreduce:
 					(yyval.ast)->add_child((yyvsp[0].ast));
 				}
 			}
-#line 2290 "y.tab.c"
+#line 2412 "y.tab.c"
     break;
 
   case 63:
-#line 784 "parse.y"
+#line 865 "parse.y"
                         {
 				if(command_options.construct_ast()){ //cout << "asdfaf";
 					(yyval.ast) = new ast_node(un_op_type, neg_val,yylineno);
@@ -2299,11 +2421,11 @@ yyreduce:
 					if(!((yyval.ast)->add_child((yyvsp[0].ast))))  exit(1);
 				}
 			}
-#line 2303 "y.tab.c"
+#line 2425 "y.tab.c"
     break;
 
   case 64:
-#line 793 "parse.y"
+#line 874 "parse.y"
                         {
 				if(command_options.construct_ast()){
 					// ter_op_node* x = new ter_op_node(yylineno);
@@ -2318,11 +2440,11 @@ yyreduce:
 					(yyval.ast)->add_child((yyvsp[0].ast));
 				}
 			}
-#line 2322 "y.tab.c"
+#line 2444 "y.tab.c"
     break;
 
 
-#line 2326 "y.tab.c"
+#line 2448 "y.tab.c"
 
       default: break;
     }
@@ -2554,7 +2676,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 809 "parse.y"
+#line 890 "parse.y"
 
 
 void yyerror(char* s){

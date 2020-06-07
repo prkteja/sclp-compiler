@@ -50,7 +50,7 @@ bool declared = false;
 %type<d_type> type
 %type<program> program
 %type<sym_tab_entry> arg
-%type<ast> assignment print read exp statement while_stmt do_while_stmt
+%type<ast> assignment print read exp statement while_stmt do_while_stmt if_else_stmt optional_else_stmt
 %type<procedure> procedure_definition procedure_declaration
 
 
@@ -216,7 +216,7 @@ arg_list	: arg
 				}
 			;
 
-optional_arg_list  : %empty
+optional_arg_list  : /*empty*/
 						{
 							if(command_options.construct_ast()){
 								$$ = new vector<symbol_table_entry*>();
@@ -285,7 +285,7 @@ procedure_definition 	: type NAME '(' optional_arg_list ')' '{' optional_variabl
 										$$ = new procedure_node(void_type,$2,local_symtab,yylineno);
 										$$->add_stmt_list(*$8);
 										$$->add_arg(*$4);
-										if(command_options.construct_tac()||true){
+										if(command_options.construct_tac()){
 											vector<tac_stmt> taclist = build_tac($$);
 											if(command_options.is_show_tac_selected()){ 
 												string file_name = command_options.get_file_name();
@@ -321,7 +321,7 @@ procedure_definition 	: type NAME '(' optional_arg_list ')' '{' optional_variabl
 // 									;
 
 
-optional_variable_declaration_list 	: %empty
+optional_variable_declaration_list 	: /*empty*/
 								{
 									if(command_options.construct_ast()){
 										$$ = new vector<symbol_table_entry*>();
@@ -429,7 +429,7 @@ statement_list 	: %empty
 				;
 */
 
-statement_list	: %empty
+statement_list	: /*empty*/
 					{
 						if(command_options.construct_ast()){
 							$$ = new vector<ast_node *> ();
@@ -438,8 +438,8 @@ statement_list	: %empty
 				| statement_list statement
 					{
 						if(command_options.construct_ast()){
-							$$->push_back($2);	
 							$$ = $1;
+							$$->push_back($2);	
 						}
 					}
 				;
@@ -448,14 +448,95 @@ statement 	: assignment | print | read | while_stmt  | do_while_stmt | if_else_s
 
 
 while_stmt 	 	: 	WHILE '(' exp ')' statement 
-				|	WHILE '(' exp ')' '{' statement_list '}';
+					{
+						if(command_options.construct_ast()){
+							$$ = new ast_node(while_type, yylineno);
+							if(!($$->add_child($3))) exit(1);
+							ast_node* stmt_list_node = new ast_node(stmt_list_type, yylineno);
+							stmt_list_node->add_child($5);
+							$$->add_child(stmt_list_node);
+						}
+					}
+				|	WHILE '(' exp ')' '{' statement_list '}'
+					{
+						if(command_options.construct_ast()){
+							$$ = new ast_node(while_type, yylineno);
+							$$->add_child($3);
+							ast_node* stmt_list_node = new ast_node(stmt_list_type, yylineno);
+							for(int i=0; i<$6->size(); i++) stmt_list_node->add_child((*$6)[i]);
+							$$->add_child(stmt_list_node);
+						}
+					}
+				;
 do_while_stmt	:	DO statement WHILE '(' exp ')' ';'
-				|	DO '{' statement_list '}' WHILE '(' exp ')' ';';
+					{
+						if(command_options.construct_ast()){
+							$$ = new ast_node(do_while_type, yylineno);
+							ast_node* stmt_list_node = new ast_node(stmt_list_type, yylineno);
+							stmt_list_node->add_child($2);
+							$$->add_child(stmt_list_node);
+							$$->add_child($5);
+						}
+					}
+				|	DO '{' statement_list '}' WHILE '(' exp ')' ';'
+					{
+						if(command_options.construct_ast()){
+							$$ = new ast_node(do_while_type, yylineno);
+							ast_node* stmt_list_node = new ast_node(stmt_list_type, yylineno);
+							for(int i=0; i<$3->size(); i++) stmt_list_node->add_child((*$3)[i]);
+							$$->add_child(stmt_list_node);
+							$$->add_child($7);
+						}
+					}
+				;
 if_else_stmt	: 	IF '(' exp ')' statement optional_else_stmt 
-				|	IF '(' exp ')' '{' statement_list '}' optional_else_stmt ;
-optional_else_stmt	:	%empty
+					{
+						if(command_options.construct_ast()){
+							$$ = new ast_node(if_else_type, yylineno);
+							$$->add_child($3);
+							ast_node* stmt_list_node = new ast_node(stmt_list_type, yylineno);
+							stmt_list_node->add_child($5);
+							$$->add_child(stmt_list_node);
+							if($6->num_child > 0) $$->add_child($6);
+						}
+					}
+				|	IF '(' exp ')' '{' statement_list '}' optional_else_stmt 
+					{
+						if(command_options.construct_ast()){
+							$$ = new ast_node(if_else_type, yylineno);
+							$$->add_child($3);
+							ast_node* stmt_list_node = new ast_node(stmt_list_type, yylineno);
+							for(int i=0; i<$6->size(); i++) stmt_list_node->add_child((*$6)[i]);
+							$$->add_child(stmt_list_node);
+							if($8->num_child > 0) $$->add_child($8);
+						}
+					}
+				;
+optional_else_stmt	:	/*empty*/
+						{
+							if(command_options.construct_ast()){
+								$$ = new ast_node(stmt_list_type, yylineno);
+							}
+						}
 					|	ELSE statement
-					| 	ELSE '{' statement_list '}' ;
+						{
+							if(command_options.construct_ast()){
+								$$ = new ast_node(stmt_list_type, yylineno);
+								ast_node* stmt_list_node = new ast_node(stmt_list_type, yylineno);
+								stmt_list_node->add_child($2);
+								$$->add_child(stmt_list_node);
+							}
+						}
+					| 	ELSE '{' statement_list '}' 
+						{
+							if(command_options.construct_ast()){
+								$$ = new ast_node(stmt_list_type, yylineno);
+								ast_node* stmt_list_node = new ast_node(stmt_list_type, yylineno);
+								for(int i=0; i<$3->size(); i++) stmt_list_node->add_child((*$3)[i]);
+								$$->add_child(stmt_list_node);
+							}
+						}
+					;
 
 
 
