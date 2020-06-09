@@ -1,6 +1,6 @@
 # sclp-compiler
 <pre>
-Usage: sclp \[options\] \[file\]
+Usage: sclp [options] [file]
                         Options:
                         -help     Show this help
                         -sa-scan  Stop after scanning
