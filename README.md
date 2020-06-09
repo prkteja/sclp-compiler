@@ -1,5 +1,5 @@
 # sclp-compiler
-
+<pre>
 Usage: sclp \[options\] \[file\]
                         Options:
                         -help     Show this help
@@ -14,5 +14,5 @@ Usage: sclp \[options\] \[file\]
                         -rtl      Show the Register Transfer Language code in file.rtl (or out.rtl)
                         -symtab   Show the symbol table of delcarations in file.sy, (or out.sym)
                         -d        Demo version. Use stdout for the outputs instead of files
-
+</pre>
 Reference: <https://www.cse.iitb.ac.in/~uday/sclp-web/>
