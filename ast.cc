@@ -4,6 +4,7 @@
 using namespace std;
 
 bool ast_node::add_child(ast_node* child){
+	switch(this->type){
 		case assgn_stmt_type: {
 			if(this->num_child > 1){
 				cerr << "Node of assignment statement at line " << this->lineno << " already has 2 children\n";

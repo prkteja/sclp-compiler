@@ -8,20 +8,6 @@
 // #include "ast.h"
 
 using namespace std;
-// class compute_tac_stmt;
-// class copy_tac_stmt;
-// class goto_tac_stmt;
-// class if_goto_tac_stmt;
-// class io_tac_stmt;
-// class label_tac_stmt;
-// class return_tac_stmt;
-
-
-// class tac_stmt{
-// public:
-// 	int num_opd;
-// 	vector<
-// }
 
 typedef enum {compute_tac, copy_tac, goto_tac, if_goto_tac, io_tac, label_tac, return_tac} tac_type;
 typedef enum {int_const_opd, float_const_opd, label_opd, str_const_opd, temp_opd, var_opd} tac_opd_type;

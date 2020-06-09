@@ -211,7 +211,7 @@ vector<tac_stmt> build_tac_node(ast_node* node){//assgn_stmt_type, read_stmt_typ
 		tac.insert(tac.end(), t0.begin(), t0.end());
 		tac.push_back(t);
 		return tac;
-	}else{
+	}else if(node->type == ter_op_type){
 		vector<tac_stmt> t0 = build_tac_node(node->children[0]);
 		vector<tac_stmt> t1 = build_tac_node(node->children[1]);
 		vector<tac_stmt> t2 = build_tac_node(node->children[2]);
@@ -268,6 +268,128 @@ vector<tac_stmt> build_tac_node(ast_node* node){//assgn_stmt_type, read_stmt_typ
 		lblstmt1.type = label_tac;
 		lblstmt1.opd_list.push_back(lbl1);
 		tac.push_back(lblstmt1);
+		node->tac_built = true;
+		return tac;
+	} else if(node->type == stmt_list_type){
+		vector<tac_stmt> tac;
+		for(int i=0; i<node->num_child; i++){
+			vector<tac_stmt> tac1 = build_tac_node(node->children[i]);
+			tac.insert(tac.end(), tac1.begin(), tac1.end());
+		};
+		node->tac_built = true;
+		return tac;
+	} else if(node->type == if_else_type){
+		vector<tac_stmt> t0 = build_tac_node(node->children[0]);
+		vector<tac_stmt> t1 = build_tac_node(node->children[1]);
+		vector<tac_stmt> tac;
+		tac.insert(tac.end(), t0.begin(), t0.end());
+		tac_stmt negtac;
+		negtac.type = compute_tac;
+		negtac.opd_list.push_back(node->children[0]->tac_return);
+		tac_opd negopd;
+		string *tmp = new string(temp());
+		negopd.lval.temp_val = tmp;
+		negtac.ret_var = negopd;
+		negtac.op_type = neg_tac_val;
+		tac.push_back(negtac);
+		tac_stmt ifgototac;
+		ifgototac.type = if_goto_tac;
+		ifgototac.opd_list.push_back(negopd);
+		tac_opd lbl0;
+		lbl0.type = label_opd;
+		string *label_str0 = new string(label());
+		lbl0.lval.label_val = label_str0;
+		tac_opd lbl1;
+		if(node->num_child > 2){
+			lbl1.type = label_opd;
+			string *label_str1 = new string(label());
+			lbl1.lval.label_val = label_str1;
+			ifgototac.opd_list.push_back(lbl1);
+		}else{
+			ifgototac.opd_list.push_back(lbl0);
+		};
+		tac.push_back(ifgototac);
+		tac.insert(tac.end(), t1.begin(), t1.end());
+		tac_stmt gototac1;
+		gototac1.type = goto_tac;
+		gototac1.opd_list.push_back(lbl0);
+		tac.push_back(gototac1);
+		if(node->num_child > 2){
+			tac_stmt lblstmt1;
+			lblstmt1.type = label_tac;
+			lblstmt1.opd_list.push_back(lbl1);
+			tac.push_back(lblstmt1);
+			vector<tac_stmt> t2 = build_tac_node(node->children[2]);
+			tac.insert(tac.end(), t2.begin(), t2.end());
+		};
+		tac_stmt lblstmt0;
+		lblstmt0.type = label_tac;
+		lblstmt0.opd_list.push_back(lbl0);
+		tac.push_back(lblstmt0);
+		node->tac_built = true;
+		return tac;
+	} else if(node->type == while_type){
+		vector<tac_stmt> t0 = build_tac_node(node->children[0]);
+		vector<tac_stmt> t1 = build_tac_node(node->children[1]);
+		vector<tac_stmt> tac;
+		tac_opd lbl0;
+		lbl0.type = label_opd;
+		string *label_str0 = new string(label());
+		lbl0.lval.label_val = label_str0;
+		tac_stmt lblstmt0;
+		lblstmt0.type = label_tac;
+		lblstmt0.opd_list.push_back(lbl0);
+		tac.push_back(lblstmt0);
+		tac.insert(tac.end(), t0.begin(), t0.end());
+		tac_stmt negtac;
+		negtac.type = compute_tac;
+		negtac.opd_list.push_back(node->children[0]->tac_return);
+		tac_opd negopd;
+		string *tmp = new string(temp());
+		negopd.lval.temp_val = tmp;
+		negtac.ret_var = negopd;
+		negtac.op_type = neg_tac_val;
+		tac.push_back(negtac);
+		tac_opd lbl1;
+		lbl1.type = label_opd;
+		string *label_str1 = new string(label());
+		lbl1.lval.label_val = label_str1;
+		tac_stmt lblstmt1;
+		lblstmt1.type = label_tac;
+		lblstmt1.opd_list.push_back(lbl1);
+		tac_stmt ifgototac;
+		ifgototac.type = if_goto_tac;
+		ifgototac.opd_list.push_back(negopd);
+		ifgototac.opd_list.push_back(lbl1);
+		tac.push_back(ifgototac);
+		tac.insert(tac.end(), t1.begin(), t1.end());
+		tac_stmt gototac;
+		gototac.type = goto_tac;
+		gototac.opd_list.push_back(lbl0);
+		tac.push_back(gototac);
+		tac.push_back(lblstmt1);
+		node->tac_built = true;
+		return tac;
+	} else { // node->type == do_while_type
+		vector<tac_stmt> t1 = build_tac_node(node->children[1]);
+		vector<tac_stmt> t0 = build_tac_node(node->children[0]);
+		vector<tac_stmt> tac;
+		tac_opd lbl0;
+		lbl0.type = label_opd;
+		string *label_str0 = new string(label());
+		lbl0.lval.label_val = label_str0;
+		tac_stmt lblstmt0;
+		lblstmt0.type = label_tac;
+		lblstmt0.opd_list.push_back(lbl0);
+		tac.push_back(lblstmt0);
+		tac.insert(tac.end(), t0.begin(), t0.end());
+		tac.insert(tac.end(), t1.begin(), t1.end());
+		tac_stmt ifgototac;
+		ifgototac.type = if_goto_tac;
+		ifgototac.opd_list.push_back(node->children[1]->tac_return);
+		ifgototac.opd_list.push_back(lbl0);
+		tac.push_back(ifgototac);
+		node->tac_built = true;
 		return tac;
 	}
 }
